@@ -35,13 +35,17 @@ exports.isUrlInList = function(url, callback) {
    var exists = false;
   fs.readFile(exports.paths.list, 'utf8', function(err, data) {
     var dataArray = data.split('\n');
-   
-    for (var i = 0; i < dataArray.length; i++) {
-      if (dataArray[i] === url) {
-        exists = true;
-        break;
-      }
+   dataArray.forEach(function(dataURL) {
+    if (dataURL === url) {
+      exists = true;
     }
+   });
+    // for (var i = 0; i < dataArray.length; i++) {
+    //   if (dataArray[i] === url) {
+    //     exists = true;
+    //     break;
+    //   }
+    // }
     callback(err, exists);
   });
   return exists;
@@ -61,28 +65,39 @@ exports.addUrlToList = function(url, callback) {
   //   }
 
   // });
-
-  exports.isUrlInList(url)
-
   fs.readFile(exports.paths.list, 'utf8', function(err, data) {
-    // var dataArray = data.split('\n');
-    // var exists = false;
-    // for (var i = 0; i < dataArray.length; i++) {
-    //   if (dataArray[i] === url) {
-    //     exists = true;
-    //     break;
-    //   }
-    // }
-    //callback(err, exists);
-    if (exports.isUrlInList(url, callback) === false) {
-      fs.appendFile(exports.paths.list, url, function(err) {
-        if (err) {
-          console.log('Error: ', err);
-        }
-        callback(err);
-      });
-    }
+    exports.isUrlInList(url, function(err, exists) {
+      if (!exists) {
+        fs.appendFile(exports.paths.list, url, function(err) {
+          if (err) {
+            console.log('Error: ', err);
+          }
+          callback(err);
+        });
+      }
+
+    });
   });
+
+  // fs.readFile(exports.paths.list, 'utf8', function(err, data) {
+  //   // var dataArray = data.split('\n');
+  //   // var exists = false;
+  //   // for (var i = 0; i < dataArray.length; i++) {
+  //   //   if (dataArray[i] === url) {
+  //   //     exists = true;
+  //   //     break;
+  //   //   }
+  //   // }
+  //   //callback(err, exists);
+  //   if (exports.isUrlInList(url, callback) === false) {
+  //     fs.appendFile(exports.paths.list, url, function(err) {
+  //       if (err) {
+  //         console.log('Error: ', err);
+  //       }
+  //       callback(err);
+  //     });
+  //   }
+  // });
 
 };
 
