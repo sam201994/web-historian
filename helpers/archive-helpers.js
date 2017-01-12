@@ -41,7 +41,7 @@ exports.addUrlToList = function(url, callback) {
   fs.readFile(exports.paths.list, 'utf8', function(err, data) {
     exports.isUrlInList(url, function(err, exists) {
       if (!exists) {
-        fs.appendFile(exports.paths.list, url, (err) => callback(err));
+        fs.appendFile(exports.paths.list,  url + '\n', (err) => callback(err));
       }
     });
   });

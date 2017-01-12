@@ -36,16 +36,43 @@ exports.handleRequest = function (req, res) {
   
 
   } else if (req.method === 'POST') {
-    //check the archive
 
-      archive.addUrlToList(req.url, function(err) {
+    req.on('data', function(data) {
+      var data = ((data).toString()).slice(4);
+      //check the archive
+      archive.isUrlArchived('www.' + data, function(err, exists) {
         if (err) {
-          console.log(err);
+          console.log('there was an error:', err);
+        }
+
+
+        if (exists) {
+          httpHelpers.serveArchivedAssets(res, 'www.' + data, function(data) {
+            res.writeHead(200, httpHelpers.headers);
+            res.end(data);
+          });
         } else {
-          res.writeHead(302);
-          res.end();
+          archive.addUrlToList(data, function(err) {
+            if (err) {
+              console.log(err);
+            } else {
+              httpHelpers.serveAssets(res, '/loading.html', function(data) {
+                res.writeHead(302, httpHelpers.headers);
+                res.end(data);
+              });
+            }
+          });
+          
         }
       });
+
+      //we do have the page downloaded (its in archive)
+
+      //we do not have the page downloaded:
+
+    });
+
+
   }
 
 };
