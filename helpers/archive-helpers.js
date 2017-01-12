@@ -31,7 +31,7 @@ exports.isUrlInList = function(url, callback) {
         exists = true;
       }
     });
-    
+
     callback(err, exists);
   });
 };
@@ -46,7 +46,12 @@ exports.addUrlToList = function(url, callback) {
   });
 };
 
-exports.isUrlArchived = function() {
+exports.isUrlArchived = function(url, callback) {
+  fs.exists(exports.paths.archivedSites + '/' + url, function(exists) {
+    callback(null, exists); //err is not returned from fs.exists, so set to null to pass tests callback
+  });
+
+
 };
 
 exports.downloadUrls = function() {
