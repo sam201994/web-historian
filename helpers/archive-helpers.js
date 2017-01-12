@@ -62,6 +62,8 @@ exports.addUrlToList = function(url, callback) {
 
   // });
 
+  exports.isUrlInList(url)
+
   fs.readFile(exports.paths.list, 'utf8', function(err, data) {
     // var dataArray = data.split('\n');
     // var exists = false;
