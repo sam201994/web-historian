@@ -32,14 +32,14 @@ exports.readListOfUrls = function(callback) {
 };
 
 exports.isUrlInList = function(url, callback) {
-   var exists = false;
+  var exists = false;
   fs.readFile(exports.paths.list, 'utf8', function(err, data) {
     var dataArray = data.split('\n');
-   dataArray.forEach(function(dataURL) {
-    if (dataURL === url) {
-      exists = true;
-    }
-   });
+    dataArray.forEach(function(dataURL) {
+      if (dataURL === url) {
+        exists = true;
+      }
+    });
     // for (var i = 0; i < dataArray.length; i++) {
     //   if (dataArray[i] === url) {
     //     exists = true;
