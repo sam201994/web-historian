@@ -9,9 +9,8 @@ initialize('./archives');
 
 var port = 8080;
 var ip = '127.0.0.1';
-// var validURLs = {
-//   '/': handler.handleRequest,
-// }
+
+
 var server = http.createServer(function(req, res) {
   handler.handleRequest(req, res);
   worker.fetchHTML();

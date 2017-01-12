@@ -1,12 +1,14 @@
 var path = require('path');
 var archive = require('../helpers/archive-helpers');
 var httpHelpers = require('./http-helpers');
+var http = require('http');
 // require more modules/folders here!
 
 exports.handleRequest = function (req, res) {
   if (req.method === 'GET') {
 
     if (req.url === '/') {
+      console.log(archive);
       httpHelpers.serveAssets(res, '/index.html', function(data) {
         res.writeHead(200, httpHelpers.headers);
         res.end(data);
@@ -40,17 +42,17 @@ exports.handleRequest = function (req, res) {
     req.on('data', function(data) {
       var data = ((data).toString()).slice(4);
       //check the archive
-      archive.isUrlArchived('www.' + data, function(err, exists) {
+      archive.isUrlArchived(data, function(err, exists) {
         if (err) {
           console.log('there was an error:', err);
         }
 
 
         if (exists) {
-          httpHelpers.serveArchivedAssets(res, 'www.' + data, function(data) {
-            res.writeHead(200, httpHelpers.headers);
-            res.end(data);
-          });
+         
+          res.writeHead(302, {'Location': 'http://127.0.0.1:8080/' + data});
+          res.end();
+
         } else {
           archive.addUrlToList(data, function(err) {
             if (err) {
