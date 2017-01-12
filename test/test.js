@@ -128,6 +128,7 @@ describe('archive helpers', function() {
       fs.writeFileSync(archive.paths.list, urlArray.join('\n'));
 
       archive.addUrlToList('someurl.com', function (err) {
+
         if (!err) {
           archive.isUrlInList('someurl.com', function (error, exists) {
             if (!error) {

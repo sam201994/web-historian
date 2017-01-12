@@ -25,13 +25,63 @@ exports.initialize = function(pathsObj) {
 // The following function names are provided to you to suggest how you might
 // modularize your code. Keep it clean!
 
-exports.readListOfUrls = function() {
+exports.readListOfUrls = function(callback) {
+  fs.readFile(exports.paths.list, 'utf8', function(err, data) {
+    callback(err, data.split('\n'));
+  });
 };
 
-exports.isUrlInList = function() {
+exports.isUrlInList = function(url, callback) {
+   var exists = false;
+  fs.readFile(exports.paths.list, 'utf8', function(err, data) {
+    var dataArray = data.split('\n');
+   
+    for (var i = 0; i < dataArray.length; i++) {
+      if (dataArray[i] === url) {
+        exists = true;
+        break;
+      }
+    }
+    callback(err, exists);
+  });
+  return exists;
 };
 
-exports.addUrlToList = function() {
+exports.addUrlToList = function(url, callback) {
+  // exports.isUrlInList(url, function(err, exists){
+  //   if (!exists) {
+  //     //add to list
+  //     fs.appendFile(exports.paths.list, '\n'+ url, function(err) {
+  //       if (err) {
+  //         console.log(err);
+  //       } 
+  //       console.log(exports.paths.list);
+  //       console.log('successfully added to file!');
+  //     });
+  //   }
+
+  // });
+
+  fs.readFile(exports.paths.list, 'utf8', function(err, data) {
+    // var dataArray = data.split('\n');
+    // var exists = false;
+    // for (var i = 0; i < dataArray.length; i++) {
+    //   if (dataArray[i] === url) {
+    //     exists = true;
+    //     break;
+    //   }
+    // }
+    //callback(err, exists);
+    if (exports.isUrlInList(url, callback) === false) {
+      fs.appendFile(exports.paths.list, url, function(err) {
+        if (err) {
+          console.log('Error: ', err);
+        }
+        callback(err);
+      });
+    }
+  });
+
 };
 
 exports.isUrlArchived = function() {
