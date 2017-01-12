@@ -20,6 +20,17 @@ exports.serveAssets = function(res, asset, callback) {
 
 };
 
+exports.serveArchivedAssets = function(res, asset, callback) {
+  fs.readFile(archive.paths.archivedSites + asset, function(err, data) {
+    if (err) {
+      console.log(err);
+    }
+    callback(data);
+  });
+
+};
+
+
 
 
 // As you progress, keep thinking about what helper functions you can put here!
