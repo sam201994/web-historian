@@ -63,7 +63,7 @@ exports.downloadUrls = function(urls) {
       if (!exists) {
         request('http://' + url, function(error, response, body) {
           if (!error) {
-            fs.writeFile(exports.paths.archivedSites + '/' + url, body, function(err) {
+            fs.writeFile(exports.paths.archivedSites + '/www.' + url, body, function(err) {
               if (err) {
                 console.log('error with writing file:', err);
               }

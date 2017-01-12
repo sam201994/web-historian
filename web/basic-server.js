@@ -1,6 +1,7 @@
 var http = require('http');
 var handler = require('./request-handler');
 var initialize = require('./initialize.js');
+var worker = require('../workers/htmlfetcher');
 
 // Why do you think we have this here?
 // HINT: It has to do with what's in .gitignore
@@ -13,6 +14,7 @@ var ip = '127.0.0.1';
 // }
 var server = http.createServer(function(req, res) {
   handler.handleRequest(req, res);
+  worker.fetchHTML();
 });
 
 if (module.parent) {
